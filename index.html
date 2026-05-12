@@ -1933,23 +1933,53 @@ window.deleteP=async(id)=>{
   catch(e){ alert('Error al eliminar.'); }
 };
 
-window.triggerPImgUp=(id)=>document.getElementById(`pimg-${id}`)?.click();
-window.handlePImgUp=async(input,id)=>{
-  const files=[...input.files]; if(!files.length||!isAdmin) return;
-  setSave('saving','● Subiendo imágenes...');
-  try{
-    const uploads=files.map(file=>{
-      const sr=ref(storage,`gloine_desing/proyectos/${id}_${Date.now()}_${file.name}`);
-      return uploadBytes(sr,file).then(sn=>getDownloadURL(sn.ref));
-    });
-    const newUrls=await Promise.all(uploads);
-    const proj=allP.find(p=>p.id===id); if(!proj) return;
-    const imageUrls=[...(proj.imageUrls||[]),...newUrls];
-    await updateDoc(doc(db,'proyectos_gloine',id),{imageUrls});
-    const i=allP.findIndex(p=>p.id===id); if(i!==-1) allP[i].imageUrls=imageUrls;
-    setSave('saved','✓ Imágenes guardadas'); setTimeout(()=>setSave('','Listo'),2000);
-    const af=document.querySelector('.flt-btn.active'); renderProys(af?af.dataset.cat:'Todos');
-  } catch(e){ setSave('error','✕ Error imágenes'); }
+window.handleImgUpload = async (input, path) => {
+  const file = input.files[0];
+  if (!file || !isAdmin) return;
+  
+  unsaved++;
+  setSave('saving', '● Subiendo...');
+  
+  try {
+    // 1. Subida a Storage (Ruta corregida según tu captura)
+    const storagePath = `gloine_desing/${path.replace('.', '_')}_${Date.now()}_${file.name}`;
+    const sr = ref(storage, storagePath);
+    const sn = await uploadBytes(sr, file);
+    const url = await getDownloadURL(sn.ref);
+    
+    console.log("Imagen subida con éxito. Intentando guardar link en Firestore...");
+
+    // 2. SOLUCIÓN AL ERROR DE PERMISOS: Usar setDoc con merge
+    // updateDoc falla si el documento 'gloine_desing' no ha sido creado manualmente
+    // setDoc con { merge: true } lo crea si no existe o lo actualiza si ya está.
+    await setDoc(CREF, { [path]: url }, { merge: true });
+    
+    unsaved = Math.max(0, unsaved - 1);
+    setSave('saved', '✓ Imagen guardada');
+    
+    // 3. Actualizar la interfaz visualmente sin recargar
+    if (path === 'hero.heroImageUrl') {
+      const img = document.getElementById('hero-bg-img');
+      const sw = document.getElementById('hero-svg-wrap');
+      if (img) { img.src = url; img.style.display = 'block'; }
+      if (sw) sw.style.display = 'none';
+    }
+    
+    if (path === 'director.photoUrl') {
+      const img = document.getElementById('director-img');
+      const wrap = document.getElementById('dir-portrait');
+      if (img) { img.src = url; img.style.display = 'block'; }
+      if (wrap) wrap.classList.add('has-image');
+    }
+
+    setTimeout(() => { if (!unsaved) setSave('', 'Listo'); }, 3000);
+
+  } catch (e) {
+    console.error("Error detallado de Firebase:", e);
+    unsaved = Math.max(0, unsaved - 1);
+    setSave('error', '✕ Error de Permisos');
+    alert("Error: No se pudo actualizar Firestore. Asegúrate de que el documento 'gloine_desing' exista en la colección 'GLOINE_CMS'.");
+  }
 };
 
 // Selección múltiple en modal
