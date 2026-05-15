@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- URL Principal -->
+  <!-- Página Principal -->
   <url>
-    <loc>https://tu-dominio.com/</loc>
+    <loc>https://gloinedesign.grupozoalum.com/</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- Secciones Principales (Anclas para SEO) -->
+  <!-- Sección de Servicios (Cristal y Acero) -->
   <url>
-    <loc>https://tu-dominio.com/#servicios</loc>
+    <loc>https://gloinedesign.grupozoalum.com/#servicios</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
+  <!-- Portafolio de Proyectos (Contenido dinámico) -->
   <url>
-    <loc>https://tu-dominio.com/#proyectos</loc>
+    <loc>https://gloinedesign.grupozoalum.com/#proyectos</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
+  <!-- Línea de Diseño Exclusivo -->
   <url>
-    <loc>https://tu-dominio.com/#diseno</loc>
+    <loc>https://gloinedesign.grupozoalum.com/#diseno</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
+  <!-- Sobre Nosotros y Dirección -->
   <url>
-    <loc>https://tu-dominio.com/#director</loc>
+    <loc>https://gloinedesign.grupozoalum.com/#director</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
+  <!-- Sección de Contacto y Cotizaciones -->
   <url>
-    <loc>https://tu-dominio.com/#contacto</loc>
+    <loc>https://gloinedesign.grupozoalum.com/#contacto</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
